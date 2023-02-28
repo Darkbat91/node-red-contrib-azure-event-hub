@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const makeEventHubWriterNode = (RED) => {
-  const { EventHubProducerClient, EventHubConsumerClient } = require("@azure/event-hubs");
+  const { EventHubProducerClient } = require("@azure/event-hubs");
 
   var statusEnum = {
       disconnected: { color: "red", text: "Disconnected" },
@@ -29,7 +29,6 @@ const makeEventHubWriterNode = (RED) => {
             );         
             setStatus(node, statusEnum.connected)
             node.on('input', async function (msg) {
-              console.log(msg)
               const eventDataBatch = await client.createBatch();
               var messageJSON = null;
               if (typeof (msg.payload) != "string") {
@@ -43,7 +42,10 @@ const makeEventHubWriterNode = (RED) => {
 
                 
               }
-              await eventDataBatch.tryAdd(messageJSON);
+              let wasAdded = eventDataBatch.tryAdd(messageJSON);
+              if (!wasAdded) {
+                node.error("Unable to add message; ", messageJSON)
+              }              
               await client.sendBatch(eventDataBatch);
 
             });
