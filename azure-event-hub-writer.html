@@ -1,0 +1,36 @@
+<!-- register eventhub reader module -->
+<script type="text/javascript">
+  RED.nodes.registerType('azure-event-hub-writer',{
+      category: 'azure-eventhub',
+      color: '#a6bbcf',
+      defaults: {
+          name: {value:""},
+          eventhub_name: {value: "", required: true},
+      },
+      credentials: {
+        eventhub_connection_string: {type: "password"},
+      },
+      inputs:1,
+      outputs:0,
+      icon: "font-awesome/fa-cloud",
+      label: function() {
+          return this.name||"azure-event-hub-writer";
+      }
+  });
+</script>
+
+<!-- Define setting UI for weather-data node -->
+<script type="text/html" data-template-name="azure-event-hub-writer">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-eventhub_connection_string"><i class="fa fa-tag"></i> Eventhub Connection String</label>
+    <input type="text" id="node-input-eventhub_connection_string" />
+  </div>
+  <div class="form-row">    
+    <label for="node-input-eventhub_name"><i class="fa fa-tag"></i> Eventhub Name</label>
+    <input type="text" id="node-input-eventhub_name" />
+  </div>
+</script>
